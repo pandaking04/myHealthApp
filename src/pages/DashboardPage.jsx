@@ -76,7 +76,7 @@ export function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
       </div>
     )
   }
@@ -91,48 +91,58 @@ export function DashboardPage() {
   }, {})
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-xl font-bold text-gray-900 dark:text-white">สรุปวันนี้</h1>
+    <div className="space-y-5">
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">สรุปวันนี้</h1>
 
       {/* Summary cards */}
       <div className="grid grid-cols-3 gap-3">
-        <SummaryCard
-          label="น้ำหนัก"
-          value={latestWeight ? `${latestWeight.weight_kg} kg` : '-'}
-          sub={weightDelta ? `${parseFloat(weightDelta) > 0 ? '+' : ''}${weightDelta} kg` : null}
-          subColor={weightDelta && parseFloat(weightDelta) <= 0 ? 'text-green-500' : 'text-red-500'}
-        />
-        <SummaryCard
-          label="Calories In"
-          value={caloriesIn.toLocaleString()}
-          sub="แคล"
-        />
-        <SummaryCard
-          label="Calories Out"
-          value={caloriesOut.toLocaleString()}
-          sub="แคล"
-        />
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800/60 text-center">
+          <div className="text-[11px] uppercase tracking-wider text-muted mb-2">น้ำหนัก</div>
+          <div className="text-xl font-bold text-gray-900 dark:text-white">
+            {latestWeight ? latestWeight.weight_kg : '-'}
+          </div>
+          <div className="text-xs text-muted">kg</div>
+          {weightDelta && (
+            <div className={`text-xs font-medium mt-1 ${parseFloat(weightDelta) <= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+              {parseFloat(weightDelta) > 0 ? '+' : ''}{weightDelta}
+            </div>
+          )}
+        </div>
+
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800/60 text-center">
+          <div className="text-[11px] uppercase tracking-wider text-muted mb-2">กินไป</div>
+          <div className="text-xl font-bold text-orange-500">{caloriesIn.toLocaleString()}</div>
+          <div className="text-xs text-muted">แคล</div>
+        </div>
+
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-gray-800/60 text-center">
+          <div className="text-[11px] uppercase tracking-wider text-muted mb-2">เผาผลาญ</div>
+          <div className="text-xl font-bold text-emerald-500">{caloriesOut.toLocaleString()}</div>
+          <div className="text-xs text-muted">แคล</div>
+        </div>
       </div>
 
       {/* Food logs */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-3">รายการอาหารวันนี้</h2>
+      <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800/60 overflow-hidden">
+        <div className="px-5 pt-4 pb-2">
+          <h2 className="font-semibold text-gray-900 dark:text-white">อาหารวันนี้</h2>
+        </div>
         {foodLogs.length === 0 ? (
-          <p className="text-gray-400 text-sm text-center py-2">ยังไม่มีรายการ</p>
+          <p className="text-muted text-sm text-center py-6 px-5">ยังไม่มีรายการ</p>
         ) : (
-          <div className="space-y-3">
+          <div className="px-5 pb-4 space-y-3">
             {['breakfast', 'lunch', 'dinner', 'snack'].map((type) => {
               const items = groupedFood[type]
               if (!items) return null
               return (
                 <div key={type}>
-                  <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-1">
+                  <h3 className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
                     {MEAL_LABELS[type]}
                   </h3>
                   {items.map((item) => (
-                    <div key={item.id} className="flex justify-between py-1 text-sm">
-                      <span className="text-gray-900 dark:text-white">{item.name}</span>
-                      <span className="text-gray-500 dark:text-gray-400">{item.calories} แคล</span>
+                    <div key={item.id} className="flex justify-between py-1.5 text-sm">
+                      <span className="text-gray-900 dark:text-white truncate mr-3">{item.name}</span>
+                      <span className="text-muted whitespace-nowrap">{item.calories} แคล</span>
                     </div>
                   ))}
                 </div>
@@ -140,26 +150,28 @@ export function DashboardPage() {
             })}
           </div>
         )}
-      </div>
+      </section>
 
       {/* Exercise logs */}
-      <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-3">การออกกำลังกายวันนี้</h2>
+      <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800/60 overflow-hidden">
+        <div className="px-5 pt-4 pb-2">
+          <h2 className="font-semibold text-gray-900 dark:text-white">ออกกำลังกายวันนี้</h2>
+        </div>
         {exerciseLogs.length === 0 ? (
-          <p className="text-gray-400 text-sm text-center py-2">ยังไม่มีรายการ</p>
+          <p className="text-muted text-sm text-center py-6 px-5">ยังไม่มีรายการ</p>
         ) : (
-          <div className="space-y-2">
+          <div className="px-5 pb-4 space-y-2.5">
             {exerciseLogs.map((log) => (
-              <div key={log.id} className="border border-gray-100 dark:border-gray-800 rounded-xl p-3">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+              <div key={log.id} className="rounded-xl bg-gray-50 dark:bg-gray-800/40 p-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className={`inline-flex px-2 py-0.5 text-[11px] font-semibold rounded-md ${
                     log.category === 'weight_training'
-                      ? 'bg-primary/10 text-primary'
-                      : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                      ? 'bg-primary/15 text-primary'
+                      : 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400'
                   }`}>
                     {SUB_TYPE_LABELS[log.sub_type]}
                   </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-muted">
                     {log.duration_min} นาที
                     {log.distance_km ? ` · ${log.distance_km} km` : ''}
                     {log.incline_percent ? ` · ชัน ${log.incline_percent}%` : ''}
@@ -167,12 +179,12 @@ export function DashboardPage() {
                   </span>
                 </div>
                 {log.exercise_sets && log.exercise_sets.length > 0 && (
-                  <div className="space-y-0.5 mt-1">
+                  <div className="mt-2 space-y-1">
                     {log.exercise_sets.map((s) => (
-                      <div key={s.id} className="flex justify-between text-sm px-2">
-                        <span className="text-gray-900 dark:text-white">{s.exercise_name}</span>
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {s.sets} &times; {s.reps} @ {s.weight_kg} kg
+                      <div key={s.id} className="flex justify-between text-sm">
+                        <span className="text-gray-700 dark:text-gray-300 truncate mr-3">{s.exercise_name}</span>
+                        <span className="text-muted whitespace-nowrap">
+                          {s.sets}&times;{s.reps} @ {s.weight_kg}kg
                         </span>
                       </div>
                     ))}
@@ -182,17 +194,7 @@ export function DashboardPage() {
             ))}
           </div>
         )}
-      </div>
-    </div>
-  )
-}
-
-function SummaryCard({ label, value, sub, subColor = 'text-gray-500 dark:text-gray-400' }) {
-  return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm text-center">
-      <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{label}</div>
-      <div className="text-lg font-bold text-gray-900 dark:text-white">{value}</div>
-      {sub && <div className={`text-xs mt-1 ${subColor}`}>{sub}</div>}
+      </section>
     </div>
   )
 }

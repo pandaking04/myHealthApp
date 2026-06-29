@@ -41,25 +41,25 @@ export function WeightChart() {
     : null
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
+    <div className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800/60">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="font-semibold text-gray-900 dark:text-white">กราฟน้ำหนัก</h2>
           {delta !== null && (
-            <span className={`text-sm ${parseFloat(delta) <= 0 ? 'text-green-500' : 'text-red-500'}`}>
+            <span className={`text-sm font-medium ${parseFloat(delta) <= 0 ? 'text-emerald-500' : 'text-red-500'}`}>
               {parseFloat(delta) > 0 ? '+' : ''}{delta} kg จากครั้งก่อน
             </span>
           )}
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5">
           {RANGE_OPTIONS.map(({ label, days: d }) => (
             <button
               key={d}
               onClick={() => setDays(d)}
-              className={`px-3 py-1 text-xs rounded-full transition ${
+              className={`px-2.5 py-1 text-xs font-medium rounded-md transition-all ${
                 days === d
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+                  ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                  : 'text-muted hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
               {label}
@@ -69,31 +69,34 @@ export function WeightChart() {
       </div>
 
       {loading ? (
-        <div className="h-48 flex items-center justify-center text-gray-400">กำลังโหลด...</div>
+        <div className="h-48 flex items-center justify-center text-muted">กำลังโหลด...</div>
       ) : chartData.length === 0 ? (
-        <div className="h-48 flex items-center justify-center text-gray-400">ยังไม่มีข้อมูล</div>
+        <div className="h-48 flex items-center justify-center text-muted">ยังไม่มีข้อมูล</div>
       ) : (
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#9ca3af" />
-            <YAxis domain={['auto', 'auto']} tick={{ fontSize: 12 }} stroke="#9ca3af" />
+        <ResponsiveContainer width="100%" height={220}>
+          <LineChart data={chartData} margin={{ top: 5, right: 5, bottom: 5, left: -10 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#9ca3af" tickLine={false} axisLine={false} />
+            <YAxis domain={['auto', 'auto']} tick={{ fontSize: 11 }} stroke="#9ca3af" tickLine={false} axisLine={false} />
             <Tooltip
               contentStyle={{
                 backgroundColor: '#1f2937',
                 border: 'none',
-                borderRadius: '8px',
+                borderRadius: '12px',
                 color: '#fff',
+                fontSize: '13px',
+                padding: '8px 12px',
               }}
             />
-            <Legend />
+            <Legend wrapperStyle={{ fontSize: '12px' }} />
             <Line
               type="monotone"
               dataKey="weight_kg"
               name="น้ำหนัก"
               stroke="#6366f1"
               strokeWidth={2}
-              dot={{ r: 3 }}
+              dot={{ r: 3, fill: '#6366f1' }}
+              activeDot={{ r: 5 }}
             />
             <Line
               type="monotone"

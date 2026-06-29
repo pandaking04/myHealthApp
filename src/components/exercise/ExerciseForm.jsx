@@ -31,10 +31,8 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // Weight training sets
   const [exerciseSets, setExerciseSets] = useState([emptySet()])
 
-  // Cardio fields
   const [distanceKm, setDistanceKm] = useState('')
   const [inclinePercent, setInclinePercent] = useState('')
 
@@ -110,25 +108,27 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
     setLoading(false)
   }
 
+  const inputClass = "w-full px-3 py-2.5 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition"
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm space-y-3">
+    <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-800/60 space-y-4">
       <h2 className="font-semibold text-gray-900 dark:text-white">บันทึกการออกกำลังกาย</h2>
 
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/30 text-danger text-sm p-3 rounded-lg">{error}</div>
+        <div className="bg-red-50 dark:bg-red-900/20 text-danger text-sm p-3 rounded-xl border border-red-100 dark:border-red-900/40">{error}</div>
       )}
 
       {/* Category toggle */}
-      <div className="flex gap-2">
+      <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
         {CATEGORIES.map(({ value, label }) => (
           <button
             key={value}
             type="button"
             onClick={() => handleCategoryChange(value)}
-            className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${
+            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
               category === value
-                ? 'bg-primary text-white'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                : 'text-muted'
             }`}
           >
             {label}
@@ -136,17 +136,17 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
         ))}
       </div>
 
-      {/* Sub-type */}
-      <div className="flex gap-2 flex-wrap">
+      {/* Sub-type pills */}
+      <div className="flex gap-1.5 flex-wrap">
         {(category === 'weight_training' ? WEIGHT_TYPES : CARDIO_TYPES).map(({ value, label }) => (
           <button
             key={value}
             type="button"
             onClick={() => setSubType(value)}
-            className={`px-3 py-1.5 text-sm rounded-full transition ${
+            className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-all ${
               subType === value
-                ? 'bg-primary/20 text-primary border border-primary'
-                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-transparent'
+                ? 'bg-primary/15 text-primary ring-1 ring-primary/30'
+                : 'bg-gray-100 dark:bg-gray-800 text-muted hover:text-gray-700 dark:hover:text-gray-300'
             }`}
           >
             {label}
@@ -162,19 +162,19 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
             <button
               type="button"
               onClick={addSet}
-              className="text-xs text-primary hover:text-primary-hover font-medium"
+              className="text-xs text-primary hover:text-primary-hover font-semibold"
             >
               + เพิ่มท่า
             </button>
           </div>
           {exerciseSets.map((s, i) => (
-            <div key={i} className="flex gap-2 items-center">
+            <div key={i} className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-1.5 items-center">
               <input
                 type="text"
                 value={s.exercise_name}
                 onChange={(e) => updateSet(i, 'exercise_name', e.target.value)}
                 placeholder="ชื่อท่า"
-                className="flex-2 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                className={inputClass}
               />
               <input
                 type="number"
@@ -182,7 +182,7 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
                 value={s.sets}
                 onChange={(e) => updateSet(i, 'sets', e.target.value)}
                 placeholder="เซ็ต"
-                className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                className={`${inputClass} w-16 text-center`}
               />
               <input
                 type="number"
@@ -190,7 +190,7 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
                 value={s.reps}
                 onChange={(e) => updateSet(i, 'reps', e.target.value)}
                 placeholder="เรป"
-                className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                className={`${inputClass} w-16 text-center`}
               />
               <input
                 type="number"
@@ -199,17 +199,17 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
                 value={s.weight_kg}
                 onChange={(e) => updateSet(i, 'weight_kg', e.target.value)}
                 placeholder="kg"
-                className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                className={`${inputClass} w-16 text-center`}
               />
-              {exerciseSets.length > 1 && (
+              {exerciseSets.length > 1 ? (
                 <button
                   type="button"
                   onClick={() => removeSet(i)}
-                  className="text-gray-400 hover:text-danger text-lg leading-none"
+                  className="w-8 h-8 flex items-center justify-center text-muted hover:text-danger rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                 >
                   &times;
                 </button>
-              )}
+              ) : <div className="w-8" />}
             </div>
           ))}
         </div>
@@ -217,7 +217,7 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
 
       {/* Cardio fields */}
       {category === 'cardio' && (
-        <div className="flex gap-3">
+        <div className="flex gap-2">
           <input
             type="number"
             min="0"
@@ -225,7 +225,7 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
             value={distanceKm}
             onChange={(e) => setDistanceKm(e.target.value)}
             placeholder="ระยะทาง (km)"
-            className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+            className={`flex-1 min-w-0 ${inputClass}`}
           />
           {subType === 'incline_walk' && (
             <input
@@ -235,14 +235,14 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
               value={inclinePercent}
               onChange={(e) => setInclinePercent(e.target.value)}
               placeholder="ความชัน %"
-              className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+              className={`flex-1 min-w-0 ${inputClass}`}
             />
           )}
         </div>
       )}
 
       {/* Common fields */}
-      <div className="flex gap-3">
+      <div className="flex gap-2">
         <input
           type="number"
           min="1"
@@ -250,7 +250,7 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
           onChange={(e) => setDurationMin(e.target.value)}
           required
           placeholder="เวลา (นาที)"
-          className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+          className={`flex-1 min-w-0 ${inputClass}`}
         />
         <input
           type="number"
@@ -258,7 +258,7 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
           value={caloriesBurned}
           onChange={(e) => setCaloriesBurned(e.target.value)}
           placeholder="แคลอรี่ (ไม่บังคับ)"
-          className="flex-1 px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+          className={`flex-1 min-w-0 ${inputClass}`}
         />
       </div>
 
@@ -267,13 +267,13 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="หมายเหตุ (ไม่บังคับ)"
-        className="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+        className={inputClass}
       />
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-medium rounded-lg transition disabled:opacity-50"
+        className="w-full py-2.5 bg-primary hover:bg-primary-hover active:scale-[0.98] text-white font-semibold rounded-xl transition-all disabled:opacity-50 shadow-sm shadow-primary/25"
       >
         {loading ? 'กำลังบันทึก...' : 'บันทึก'}
       </button>

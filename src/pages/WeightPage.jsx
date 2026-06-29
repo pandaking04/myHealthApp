@@ -13,40 +13,42 @@ export function WeightPage() {
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-xl font-bold text-gray-900 dark:text-white">น้ำหนัก</h1>
+    <div className="space-y-5">
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white">น้ำหนัก</h1>
 
       <WeightForm onSubmit={addLog} />
       <WeightChart />
 
-      <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
-        <h2 className="font-semibold text-gray-900 dark:text-white mb-3">ประวัติ</h2>
+      <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800/60 overflow-hidden">
+        <div className="px-5 pt-4 pb-2">
+          <h2 className="font-semibold text-gray-900 dark:text-white">ประวัติ</h2>
+        </div>
 
         {loading ? (
-          <p className="text-gray-400 text-sm text-center py-4">กำลังโหลด...</p>
+          <p className="text-muted text-sm text-center py-6 px-5">กำลังโหลด...</p>
         ) : recentLogs.length === 0 ? (
-          <p className="text-gray-400 text-sm text-center py-4">ยังไม่มีข้อมูล</p>
+          <p className="text-muted text-sm text-center py-6 px-5">ยังไม่มีข้อมูล</p>
         ) : (
-          <div className="space-y-1">
+          <div className="px-2 pb-3">
             {recentLogs.map((log) => (
               <div
                 key={log.id}
-                className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 group"
+                className="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 group transition"
               >
-                <div>
-                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-sm text-muted whitespace-nowrap">
                     {formatDate(log.logged_at)}
                   </span>
-                  <span className="text-sm font-medium text-gray-900 dark:text-white ml-3">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-white">
                     {log.weight_kg} kg
                   </span>
                   {log.note && (
-                    <span className="text-xs text-gray-400 ml-2">{log.note}</span>
+                    <span className="text-xs text-muted truncate">{log.note}</span>
                   )}
                 </div>
                 <button
                   onClick={() => deleteLog(log.id)}
-                  className="text-gray-400 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity text-sm"
+                  className="text-muted hover:text-danger opacity-0 group-hover:opacity-100 transition-all text-xs font-medium shrink-0 ml-2"
                 >
                   ลบ
                 </button>
@@ -54,7 +56,7 @@ export function WeightPage() {
             ))}
           </div>
         )}
-      </div>
+      </section>
     </div>
   )
 }

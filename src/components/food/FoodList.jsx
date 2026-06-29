@@ -15,38 +15,36 @@ export function FoodList({ logs, totalCalories, onDelete }) {
   }, {})
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm">
-      <div className="flex items-center justify-between mb-3">
+    <section className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800/60 overflow-hidden">
+      <div className="flex items-center justify-between px-5 pt-4 pb-2">
         <h2 className="font-semibold text-gray-900 dark:text-white">รายการอาหาร</h2>
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          รวม {totalCalories.toLocaleString()} แคล
+        <span className="text-sm font-medium text-muted">
+          {totalCalories.toLocaleString()} แคล
         </span>
       </div>
 
       {Object.keys(grouped).length === 0 ? (
-        <p className="text-gray-400 text-sm text-center py-4">ยังไม่มีรายการ</p>
+        <p className="text-muted text-sm text-center py-6 px-5">ยังไม่มีรายการ</p>
       ) : (
-        <div className="space-y-4">
+        <div className="px-5 pb-4 space-y-3">
           {Object.entries(grouped).map(([type, items]) => (
             <div key={type}>
-              <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase mb-2">
+              <h3 className="text-[11px] uppercase tracking-wider text-muted mb-1.5">
                 {MEAL_LABELS[type]}
               </h3>
-              <div className="space-y-1">
+              <div className="space-y-0.5">
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 group"
+                    className="flex items-center justify-between py-2 px-3 -mx-1 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800/40 group transition"
                   >
-                    <div>
-                      <span className="text-sm text-gray-900 dark:text-white">{item.name}</span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
-                        {item.calories} แคล
-                      </span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-sm text-gray-900 dark:text-white truncate">{item.name}</span>
+                      <span className="text-xs text-muted whitespace-nowrap">{item.calories} แคล</span>
                     </div>
                     <button
                       onClick={() => onDelete(item.id)}
-                      className="text-gray-400 hover:text-danger opacity-0 group-hover:opacity-100 transition-opacity text-sm"
+                      className="text-muted hover:text-danger opacity-0 group-hover:opacity-100 transition-all text-xs font-medium shrink-0 ml-2"
                     >
                       ลบ
                     </button>
@@ -57,6 +55,6 @@ export function FoodList({ logs, totalCalories, onDelete }) {
           ))}
         </div>
       )}
-    </div>
+    </section>
   )
 }

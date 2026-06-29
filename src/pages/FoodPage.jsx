@@ -8,21 +8,21 @@ export function FoodPage() {
   const { logs, loading, totalCalories, addLog, deleteLog } = useFoodLogs(date)
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">อาหาร</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">อาหาร</h1>
         <input
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+          className="px-3 py-1.5 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary/30 focus:border-primary outline-none transition"
         />
       </div>
 
       <FoodForm onSubmit={addLog} />
 
       {loading ? (
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm text-center text-gray-400">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-800/60 text-center text-muted">
           กำลังโหลด...
         </div>
       ) : (
