@@ -168,48 +168,61 @@ export function ExerciseForm({ onSubmitWeight, onSubmitCardio }) {
             </button>
           </div>
           {exerciseSets.map((s, i) => (
-            <div key={i} className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-1.5 items-center">
-              <input
-                type="text"
-                value={s.exercise_name}
-                onChange={(e) => updateSet(i, 'exercise_name', e.target.value)}
-                placeholder="ชื่อท่า"
-                className={inputClass}
-              />
-              <input
-                type="number"
-                min="1"
-                value={s.sets}
-                onChange={(e) => updateSet(i, 'sets', e.target.value)}
-                placeholder="เซ็ต"
-                className={`${inputClass} w-16 text-center`}
-              />
-              <input
-                type="number"
-                min="1"
-                value={s.reps}
-                onChange={(e) => updateSet(i, 'reps', e.target.value)}
-                placeholder="เรป"
-                className={`${inputClass} w-16 text-center`}
-              />
-              <input
-                type="number"
-                min="0"
-                step="0.5"
-                value={s.weight_kg}
-                onChange={(e) => updateSet(i, 'weight_kg', e.target.value)}
-                placeholder="kg"
-                className={`${inputClass} w-16 text-center`}
-              />
-              {exerciseSets.length > 1 ? (
-                <button
-                  type="button"
-                  onClick={() => removeSet(i)}
-                  className="w-8 h-8 flex items-center justify-center text-muted hover:text-danger rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-                >
-                  &times;
-                </button>
-              ) : <div className="w-8" />}
+            <div key={i} className="rounded-xl bg-gray-50 dark:bg-gray-800/40 p-3 space-y-2">
+              <div className="flex gap-1.5 items-center">
+                <input
+                  type="text"
+                  value={s.exercise_name}
+                  onChange={(e) => updateSet(i, 'exercise_name', e.target.value)}
+                  placeholder="ชื่อท่า"
+                  className={`flex-1 min-w-0 ${inputClass}`}
+                />
+                {exerciseSets.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeSet(i)}
+                    className="w-9 h-9 flex items-center justify-center text-muted hover:text-danger rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition shrink-0"
+                  >
+                    &times;
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-muted mb-0.5 block">เซ็ต</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={s.sets}
+                    onChange={(e) => updateSet(i, 'sets', e.target.value)}
+                    placeholder="0"
+                    className={`${inputClass} text-center`}
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-muted mb-0.5 block">เรป</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={s.reps}
+                    onChange={(e) => updateSet(i, 'reps', e.target.value)}
+                    placeholder="0"
+                    className={`${inputClass} text-center`}
+                  />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-muted mb-0.5 block">น้ำหนัก (kg)</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.5"
+                    value={s.weight_kg}
+                    onChange={(e) => updateSet(i, 'weight_kg', e.target.value)}
+                    placeholder="0"
+                    className={`${inputClass} text-center`}
+                  />
+                </div>
+              </div>
             </div>
           ))}
         </div>
