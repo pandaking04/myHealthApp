@@ -8,10 +8,9 @@ const MEAL_LABELS = {
   snack: 'ของว่าง',
 }
 
-const INTENSITY_LABELS = {
-  low: 'เบา',
-  medium: 'ปานกลาง',
-  high: 'หนัก',
+const SUB_TYPE_LABELS = {
+  push: 'Push', pull: 'Pull', leg: 'Leg', upper: 'Upper',
+  walk: 'เดิน', run: 'วิ่ง', incline_walk: 'เดินชัน',
 }
 
 export function DashboardPage() {
@@ -48,7 +47,7 @@ export function DashboardPage() {
         .order('logged_at', { ascending: true }),
       supabase
         .from('exercise_logs')
-        .select('*')
+        .select('*, exercise_sets(*)')
         .gte('logged_at', startOfDay)
         .lte('logged_at', endOfDay)
         .order('logged_at', { ascending: true }),
@@ -149,19 +148,35 @@ export function DashboardPage() {
         {exerciseLogs.length === 0 ? (
           <p className="text-gray-400 text-sm text-center py-2">ยังไม่มีรายการ</p>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-2">
             {exerciseLogs.map((log) => (
-              <div key={log.id} className="flex justify-between py-1 text-sm">
-                <span className="text-gray-900 dark:text-white">
-                  {log.type}
-                  <span className="text-gray-500 dark:text-gray-400 ml-2">
-                    {log.duration_min} นาที · {INTENSITY_LABELS[log.intensity]}
+              <div key={log.id} className="border border-gray-100 dark:border-gray-800 rounded-xl p-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className={`px-2 py-0.5 text-xs font-medium rounded-full ${
+                    log.category === 'weight_training'
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                  }`}>
+                    {SUB_TYPE_LABELS[log.sub_type]}
                   </span>
-                </span>
-                {log.calories_burned && (
-                  <span className="text-gray-500 dark:text-gray-400">
-                    {log.calories_burned} แคล
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {log.duration_min} นาที
+                    {log.distance_km ? ` · ${log.distance_km} km` : ''}
+                    {log.incline_percent ? ` · ชัน ${log.incline_percent}%` : ''}
+                    {log.calories_burned ? ` · ${log.calories_burned} แคล` : ''}
                   </span>
+                </div>
+                {log.exercise_sets && log.exercise_sets.length > 0 && (
+                  <div className="space-y-0.5 mt-1">
+                    {log.exercise_sets.map((s) => (
+                      <div key={s.id} className="flex justify-between text-sm px-2">
+                        <span className="text-gray-900 dark:text-white">{s.exercise_name}</span>
+                        <span className="text-gray-500 dark:text-gray-400">
+                          {s.sets} &times; {s.reps} @ {s.weight_kg} kg
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             ))}

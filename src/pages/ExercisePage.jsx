@@ -3,13 +3,13 @@ import { ExerciseForm } from '../components/exercise/ExerciseForm'
 import { ExerciseList } from '../components/exercise/ExerciseList'
 
 export function ExercisePage() {
-  const { logs, loading, totalDuration, totalCaloriesBurned, addLog, deleteLog } = useExerciseLogs()
+  const { logs, loading, totalDuration, totalCaloriesBurned, addWeightTraining, addCardio, deleteLog } = useExerciseLogs()
 
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-bold text-gray-900 dark:text-white">ออกกำลังกาย</h1>
 
-      <ExerciseForm onSubmit={addLog} />
+      <ExerciseForm onSubmitWeight={addWeightTraining} onSubmitCardio={addCardio} />
 
       {loading ? (
         <div className="bg-white dark:bg-gray-900 rounded-2xl p-4 shadow-sm text-center text-gray-400">
